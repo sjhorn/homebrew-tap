@@ -1,0 +1,39 @@
+name: Update casks
+
+# Checks for a new TouchGuard release once a day (or when run by hand) and
+# updates the cask's version and sha256. Uses this repo's own token: no
+# secrets are needed.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  touchguard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Update touchguard to the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag=$(gh release view --repo sjhorn/TouchGuard --json tagName -q .tagName)
+          version=${tag#v}
+          current=$(sed -nE 's/^  version "(.*)"/\1/p' Casks/touchguard.rb)
+          if [ "$version" = "$current" ]; then
+            echo "touchguard is up to date ($current)"
+            exit 0
+          fi
+          url="https://github.com/sjhorn/TouchGuard/releases/download/$tag/TouchGuard-$version.dmg"
+          sha=$(curl -fsSL "$url" | sha256sum | cut -d' ' -f1)
+          sed -i -E "s/^  version \".*\"/  version \"$version\"/; s/^  sha256 \".*\"/  sha256 \"$sha\"/" Casks/touchguard.rb
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "touchguard $version"
+          git push
+          echo "Updated touchguard $current → $version"
