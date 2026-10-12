@@ -1,6 +1,6 @@
 cask "touchguard" do
-  version "2.0.1"
-  sha256 "de950e4fac7d6cdf885aec6e81f0bfb586ab8c5d8450cece378bb71d17ba7874"
+  version "2.0.2"
+  sha256 "69e05f09b5d0265e37154bfa80cdad49987358e5f7131ac01c47d8acff35b41d"
 
   url "https://github.com/sjhorn/TouchGuard/releases/download/v#{version}/TouchGuard-#{version}.dmg"
   name "TouchGuard"
