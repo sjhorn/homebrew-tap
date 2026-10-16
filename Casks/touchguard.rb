@@ -5,10 +5,10 @@ cask "touchguard" do
   url "https://github.com/sjhorn/TouchGuard/releases/download/v#{version}/TouchGuard-#{version}.dmg"
   name "TouchGuard"
   desc "Blocks accidental trackpad clicks while typing"
-  homepage "https://blog.hornmicro.com/TouchGuard/"
+  homepage "https://touchguard.hornmicro.com/"
 
   livecheck do
-    url "https://blog.hornmicro.com/TouchGuard/appcast.xml"
+    url "https://touchguard.hornmicro.com/appcast.xml"
     strategy :sparkle, &:short_version
   end
 
@@ -29,6 +29,6 @@ cask "touchguard" do
   caveats <<~EOS
     TouchGuard needs Accessibility permission to hold back clicks after typing.
     It never reads what you type. Open it once from Applications and follow the
-    permission window. Help: https://blog.hornmicro.com/TouchGuard/support/
+    permission window. Help: https://touchguard.hornmicro.com/support/
   EOS
 end
